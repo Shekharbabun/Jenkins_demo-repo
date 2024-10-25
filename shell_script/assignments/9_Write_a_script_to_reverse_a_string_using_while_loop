@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Function to reverse a string using tac
+reverse_string() {
+    input_string="$1"
+    
+    echo "$input_string" | fold -w1 | tac | tr -d '\n'
+}
+
+read -p "Enter a string to reverse: " user_input
+result=$(reverse_string "$user_input")
+echo "Reversed string: $result"
+
