@@ -1,0 +1,39 @@
+pipeline{
+    agent{label 'Java'}
+    stages{
+        stage('checkout'){
+            steps {
+                git branch: 'main', url: 'https://github.com/saikiran-private/java-example.git'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'testing the unit test case'
+                }
+            }
+
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+                }
+            }
+        
+        stage('deploy'){
+            steps{
+                sh "sudo rsync -av /home/ubuntu/jenkins/Agents/workspace/'assign-2-depolytomcat'/target/surya-chandu-1.0.war/home/ubuntu/tomcat10/webapps/"
+                sh "/home/ubuntu/tomcat10/bin/shutdown.sh"
+                sh "/home/ubuntu/tomcat10/bin/startup.sh"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+
